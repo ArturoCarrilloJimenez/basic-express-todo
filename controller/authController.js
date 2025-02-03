@@ -39,4 +39,8 @@ authController.login = async (req, res) => {
     }
 }
 
+authController.protected = async (req, res) => {
+    res.status(200).json({ message: 'Ruta protegida' });
+}
+
 module.exports = authController

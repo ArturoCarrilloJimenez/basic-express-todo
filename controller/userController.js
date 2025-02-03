@@ -9,7 +9,7 @@ const con = require('../db/mysql')
 userController.getUsers = (req, res) => {
     con.query('SELECT * FROM user', (err, rows) => {
         if (err) throw err
-        res.json(rows)
+        res.status(200).json(rows)
     })
 }
 
@@ -17,7 +17,7 @@ userController.getUser = (req, res) => {
     const { id } = req.params
     con.query('SELECT * FROM user WHERE id = ?', [id], (err, rows) => {
         if (err) throw err
-        res.json(rows)
+        res.status(200).json(rows)
     })
 }
 
@@ -28,7 +28,7 @@ userController.createUser = async (req, res) => {
 
     con.query('INSERT INTO `user`(`username`, `password`, `fullname`) VALUES (?, ?, ?)', [username, hasPassword, fullname], (err, rows) => {
         if (err) throw err
-        res.json({response: 'Insercion realizada con exito'})
+        res.status(200).json({response: 'Insercion realizada con exito'})
     })
 }
 
@@ -36,7 +36,7 @@ userController.deleteUser = (req, res) => {
     const { id } = req.params
     con.query('DELETE FROM user WHERE id = ?', [id], (err, rows) => {
         if (err) throw err
-        res.json({response: 'Borrado realizada con exito'})
+        res.status(200).json({response: 'Borrado realizada con exito'})
     })
 }
 
@@ -47,7 +47,7 @@ userController.updateUser = (req, res) => {
 
     con.query('UPDATE user SET username = ?, password = ?, fullname = ? WHERE id = ?', [username, hasPassword, fullname, id], (err, rows) => {
         if (err) throw err
-        res.json({response: 'Modificaccion realizada con exito'})
+        res.status(200).json({response: 'Modificaccion realizada con exito'})
     })
 }
 
