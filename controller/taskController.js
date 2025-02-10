@@ -1,6 +1,6 @@
 const taskController = {}
 
-const con = require('../db/mysql')
+import con from '../db/mysql.js'
 
 // TODO realizar validaciones de los campos
 
@@ -51,4 +51,4 @@ taskController.getTasksByUser = (req, res) => {
     })
 }
 
-module.exports = taskController
+export default taskController

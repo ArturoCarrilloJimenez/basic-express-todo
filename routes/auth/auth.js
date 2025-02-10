@@ -1,11 +1,11 @@
-var express = require('express');
+import express from 'express';
 var router = express.Router();
 
-const userController = require('../../controller/authController');
-const auth = require('../../middleware/authenticated');
+import authController from '../../controller/authController.js';
+import auth from '../../middleware/authenticated.js';
 
-router.post('/login', userController.login);
+router.post('/login', authController.login);
 
-router.get('/protected', [auth.ansureAuth], userController.protected);
+router.get('/protected', [auth.ansureAuth], authController.protected);
 
-module.exports = router;
+export default router;

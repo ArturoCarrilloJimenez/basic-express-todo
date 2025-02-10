@@ -1,9 +1,9 @@
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt'
 
 const authController = {}
 
-const con = require('../db/mysql')
-const jwt = require('../services/jwt')
+import con from '../db/mysql.js'
+import jwt from '../middleware/authenticated.js'
 
 // Método que se encarga de validar si el usuario existe, comparando el username y password
 authController.validateUser = async (username, password) => {
@@ -43,4 +43,4 @@ authController.protected = async (req, res) => {
     res.status(200).json({ message: 'Ruta protegida' });
 }
 
-module.exports = authController
+export default authController

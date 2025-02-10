@@ -1,5 +1,5 @@
-var express = require('express');
-var logger = require('morgan');
+import express from 'express';
+import logger from 'morgan';
 
 var app = express();
 
@@ -10,10 +10,10 @@ app.use(express.json());
 app.use(logger('dev'));
 
 // Rutas
-var indexRouter = require('./routes/index');
+import indexRouter from './routes/index.js';
 app.use('/api', indexRouter);
 
-const cors = require('cors');
+import cors from 'cors';
 app.use(cors());
 
-module.exports = app;
+export default app;

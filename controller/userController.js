@@ -1,8 +1,8 @@
-const bcrypt = require('bcrypt');
+import bcrypt from 'bcrypt'
 
 const userController = {}
 
-const con = require('../db/mysql')
+import con from '../db/mysql.js'
 
 // TODO realizar validaciones de los campos
 
@@ -52,4 +52,4 @@ userController.updateUser = (req, res) => {
 }
 
 
-module.exports = userController
+export default userController

@@ -1,6 +1,6 @@
-const moment = require('moment');
-const jwt = require('../services/jwt');
-require('dotenv').config();
+import moment from 'moment';
+import jwt from '../services/jwt.js';
+import dotenv from 'dotenv';
 
 function ansureAuth(req, res, next) {
     if (!req.headers.authorization) {
@@ -25,4 +25,4 @@ function ansureAuth(req, res, next) {
     next();
 }
 
-module.exports = { ansureAuth};
+export default { ansureAuth};

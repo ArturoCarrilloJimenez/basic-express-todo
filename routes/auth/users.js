@@ -1,8 +1,8 @@
-var express = require('express');
+import express from 'express';
 var router = express.Router();
 
-const userController = require('../../controller/userController')
-const { getTasksByUser } = require('../../controller/taskController')
+import userController from '../../controller/userController.js';
+import taskController from '../../controller/taskController.js';
 
 router.get('/', userController.getUsers);
 router.get('/:id', userController.getUser);
@@ -10,6 +10,7 @@ router.post('/', userController.createUser);
 router.delete('/:id', userController.deleteUser);
 router.put('/', userController.updateUser);
 
-router.get('/task/:userId', getTasksByUser);
+router.get('/task/:userId', taskController.getTasksByUser);
 
-module.exports = router;
+export default router;
+

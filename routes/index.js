@@ -1,12 +1,12 @@
-var express = require('express');
+import express from 'express';
 var router = express.Router();
 
-const taskRoutes = require('./task')
-const usersRoutes = require('./auth/users')
-const authRoutes = require('./auth/auth')
+import taskRoutes from './task.js';
+import usersRoutes from './auth/users.js';
+import authRoutes from './auth/auth.js';
 
 router.use('/task', taskRoutes);
 router.use('/users', usersRoutes);
 router.use('/auth', authRoutes);
 
-module.exports = router;
+export default router;
