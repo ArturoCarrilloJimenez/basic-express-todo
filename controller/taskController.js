@@ -1,14 +1,12 @@
 const taskController = {}
 
-import con from '../db/mysql.js'
+import Task from "../models/taskModel.js"
 
 // TODO realizar validaciones de los campos
 
-taskController.getTasks = (req, res) => {
-    con.query('SELECT * FROM task', (err, rows) => {
-        if (err) throw err
-        res.status(200).json(rows)
-    })
+taskController.getTasks = async (req, res) => {
+    const result = await Task.find()
+    res.status(200).json(result)
 }
 
 taskController.getTask = (req, res) => {
