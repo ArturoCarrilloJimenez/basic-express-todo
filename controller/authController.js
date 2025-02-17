@@ -2,27 +2,28 @@ import bcrypt from 'bcrypt'
 
 const authController = {}
 
-import con from '../db/mysql.js'
-import jwt from '../middleware/authenticated.js'
+import { populate } from "dotenv"
+import User from "../models/userModel.js"
+import jwt from '../services/jwt.js'
 
 // Método que se encarga de validar si el usuario existe, comparando el username y password
 authController.validateUser = async (username, password) => {
-    return new Promise((res, rej) => {
-        con.query('SELECT * FROM user WHERE username = ?', [username], (err, rows) => {
-            // Una vez que se obtienen los datos del usuario, se compara la contraseña
-            if (rows.length > 0) {
-                const user = rows[0];
-                bcrypt.compare(password, user.password, (err, result) => {
-                    if (result) {
-                        res(user); // Contraseña correcta
-                    } else {
-                        res(false); // Contraseña incorrecta
-                    }
-                });
-            } else {
-                res(false); // Usuario no encontrado
-            }
-        });
+    return new Promise(async (res, rej) => {
+        const data = await User.find({ username });
+
+        // Una vez que se obtienen los datos del usuario, se compara la contraseña
+        if (data.length > 0) {
+            const user = data[0];
+            bcrypt.compare(password, user.password, (err, result) => {
+                if (result) {
+                    res(user); // Contraseña correcta
+                } else {
+                    res(false); // Contraseña incorrecta
+                }
+            });
+        } else {
+            res(false); // Usuario no encontrado
+        }
     });
 };
 
@@ -40,7 +41,7 @@ authController.login = async (req, res) => {
 }
 
 authController.protected = async (req, res) => {
-    res.status(200).json({ message: 'Ruta protegida' });
+    res.status(200).json({ message: 'Ruta protegida, has accedido correctamente' });
 }
 
 export default authController
