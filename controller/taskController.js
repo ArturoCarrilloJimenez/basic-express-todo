@@ -4,8 +4,6 @@ import { populate } from "dotenv"
 import Task from "../models/taskModel.js"
 import User from "../models/userModel.js"
 
-// TODO realizar validaciones de los campos
-
 taskController.getTasks = async (req, res) => {
     const result = await Task.find()
     res.status(200).json(result)

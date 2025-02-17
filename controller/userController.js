@@ -2,53 +2,64 @@ import bcrypt from 'bcrypt'
 
 const userController = {}
 
-import con from '../db/mysql.js'
+import { populate } from "dotenv"
+import Task from "../models/taskModel.js"
+import User from "../models/userModel.js"
 
-// TODO realizar validaciones de los campos
 
-userController.getUsers = (req, res) => {
-    con.query('SELECT * FROM user', (err, rows) => {
-        if (err) throw err
-        res.status(200).json(rows)
-    })
+userController.getUsers = async (req, res) => {
+    const users = await User.find()
+
+    users ? res.status(200).json(users) :
+        res.status(404).json({ response: 'Usuarios no encontrados' })
 }
 
-userController.getUser = (req, res) => {
+userController.getUser = async (req, res) => {
     const { id } = req.params
-    con.query('SELECT * FROM user WHERE id = ?', [id], (err, rows) => {
-        if (err) throw err
-        res.status(200).json(rows)
-    })
+    const user = await User.findById(id)
+
+    user ? res.status(200).json(user) :
+        res.status(404).json({ response: 'Usuario no encontrado' })
 }
 
 userController.createUser = async (req, res) => {
     const { username, password, fullname } = req.body
 
-    const hasPassword = await bcrypt.hashSync(password, 10)
+    const hasPassword = bcrypt.hashSync(password, 10)
 
-    con.query('INSERT INTO `user`(`username`, `password`, `fullname`) VALUES (?, ?, ?)', [username, hasPassword, fullname], (err, rows) => {
-        if (err) throw err
-        res.status(200).json({response: 'Insercion realizada con exito'})
-    })
+    const newUser = new User({ username, password: hasPassword, fullname })
+    newUser.save()
+
+    newUser ? res.status(200).json({ response: 'Usuario creado con exito' }) :
+        res.status(404).json({ response: 'Error al crear usuario' })
 }
 
-userController.deleteUser = (req, res) => {
+userController.deleteUser = async (req, res) => {
     const { id } = req.params
-    con.query('DELETE FROM user WHERE id = ?', [id], (err, rows) => {
-        if (err) throw err
-        res.status(200).json({response: 'Borrado realizada con exito'})
-    })
+
+    const user = await User.findById(id).populate('task')
+
+    if (user) {
+        user.task.map(async (task) => {
+            await Task.findByIdAndDelete(task._id)
+        })
+
+        await User.findByIdAndDelete(id)
+    }
+
+    user ? res.status(200).json({ response: 'Usuario eliminado con exito' }) :
+        res.status(404).json({ response: 'Usuario no encontrado' })
 }
 
-userController.updateUser = (req, res) => {
+userController.updateUser = async (req, res) => {
     const { username, password, fullname, id } = req.body
 
     const hasPassword = bcrypt.hashSync(password, 10)
 
-    con.query('UPDATE user SET username = ?, password = ?, fullname = ? WHERE id = ?', [username, hasPassword, fullname, id], (err, rows) => {
-        if (err) throw err
-        res.status(200).json({response: 'Modificaccion realizada con exito'})
-    })
+    const user = await User.findByIdAndUpdate(id, { username, password: hasPassword, fullname })
+
+    user ? res.status(200).json({ response: 'Usuario actualizado con exito' }) :
+        res.status(404).json({ response: 'Usuario no encontrado' })
 }
 
 
