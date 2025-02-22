@@ -52,8 +52,8 @@ taskController.deleteTask = async (req, res) => {
 }
 
 taskController.updateTask = async (req, res) => {
-    const { id, title, description, completed } = req.body
-    const task = await Task.findByIdAndUpdate(id, { title, description, completed })
+    const { id, title, description, complete } = req.body
+    const task = await Task.findByIdAndUpdate(id, { title, description, complete })
 
     task ? res.status(200).json({ response: 'Tarea actualizada con éxito' }) :
         res.status(404).json({ response: 'Tarea no encontrada' })
