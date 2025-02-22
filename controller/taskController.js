@@ -42,7 +42,7 @@ taskController.deleteTask = async (req, res) => {
         const user = await User.findById(task.userId)
         user.task.pull(task._id)
         user.save()
-
+        
         // Eliminar la tarea
         await Task.findByIdAndDelete(id)
     }

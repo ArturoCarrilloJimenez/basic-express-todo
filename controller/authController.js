@@ -27,7 +27,6 @@ authController.validateUser = async (username, password) => {
     });
 };
 
-
 authController.login = async (req, res) => {
     const { username, password } = req.body;
     const user = await authController.validateUser(username, password);
