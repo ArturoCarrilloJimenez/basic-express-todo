@@ -34,7 +34,7 @@ authController.login = async (req, res) => {
 
     if (user) {
         const token = jwt.createToken(user, 60 * 60 * 24);
-        res.status(200).json({ token });
+        res.status(200).json({ token, userId: user.id });
     } else {
         res.status(401).json({ message: 'Usuario o contraseña incorrecta' });
     }
